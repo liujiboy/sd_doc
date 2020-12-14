@@ -1,5 +1,5 @@
 # 文档说明
-本文档包含开发前后端分离的Web和移动应用，以及ROS（机器人操作系统）应用所需要的技术方法。本文档将为每一项技术梳理一个学习的路线图，给出相关的学习资料。你需要按照文档中给出的学习路线图，进一步阅读资料。文档所涉及的技术如下：
+$\sum_{i=0}^N\int_{a}^{b}g(t,i)\text{d}t$本文档包含开发前后端分离的Web和移动应用，以及ROS（机器人操作系统）应用所需要的技术方法。本文档将为每一项技术梳理一个学习的路线图，给出相关的学习资料。你需要按照文档中给出的学习路线图，进一步阅读资料。文档所涉及的技术如下：
 
 ![文档内容](images/1.png)
 
@@ -59,8 +59,8 @@ Linux上的C/C++最符合C/C++规范（C99和C++14）,所以我们会使用Linux
 
 ## Java
 专业程序员会使用Java。如果你不准备成为专业程序员，这部分可以跳过。视频教程可以参考：
-1.[Java零基础教程视频](https://www.bilibili.com/video/BV1Rx411876f?from=search&seid=5831169845635309440)
-2.[]()
+
+1. [Java零基础教程视频](https://www.bilibili.com/video/BV1Rx411876f?from=search&seid=5831169845635309440)
 ## HTML
 HTML就是超文本标记语言，也就是常说的网页。HTML的学习可以参考如下教程：
 
@@ -70,8 +70,8 @@ HTML就是超文本标记语言，也就是常说的网页。HTML的学习可以
 ## CSS
 如何为HTML加上样式呢？那就需要使用CSS。CSS的学习可以参考如下教程：
 
-1.[菜鸟CSS教程](https://www.runoob.com/css/css-tutorial.html)
-2.[黑马程序员pink老师前端入门视频教程 HTML5+CSS3+移动端布局](https://www.bilibili.com/video/BV14J4114768?from=search&seid=3887220373124555937)
+1. [菜鸟CSS教程](https://www.runoob.com/css/css-tutorial.html)
+2. [黑马程序员pink老师前端入门视频教程 HTML5+CSS3+移动端布局](https://www.bilibili.com/video/BV14J4114768?from=search&seid=3887220373124555937)
 
 
 ## JavaScript
