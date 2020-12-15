@@ -329,7 +329,7 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ numpy scipy matplotl
 #安装TensorFlow
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ tensorflow
 #安装Pytorch
-RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ pytorch
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ torch torchvision
 ```
 生成这个镜像（你并不需要理解上面的代码，虽然理解起来不难），自己试试。启动jupyter notebook，接下来就可以训练AI了。
 
