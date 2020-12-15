@@ -329,9 +329,12 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ numpy scipy matplotl
 #安装TensorFlow
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ tensorflow
 #安装Pytorch
-RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ torch torchvision
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ torch 
+RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ torchvision
 ```
 生成这个镜像（你并不需要理解上面的代码，虽然理解起来不难），自己试试。启动jupyter notebook，接下来就可以训练AI了。
+
+友情提示：上述代码构建时需要的内存较大，你需要用`-m`参数提升docker的内存。
 
 ## 你需要自己定制镜像吗？
 通常是不需要的，DockerHub上能找到各种镜像，课程中老师会给你提供各种镜像，百度上可以找到各种Dockerfile。有了Docker，世界真的变得很轻松。
