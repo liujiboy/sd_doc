@@ -338,6 +338,10 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ torchvision
 
 ![提高内存限制](images/提高内存限制.png)
 
+在命令行中执行，`docker stats`指令，可以查看当前运行的容积的内存占用情况。`docker run`的`-m`参数可以提高或者限制容器的内存占用。
+
+![docker内存占用情况](images/docker内存占用情况.png)
+
 ## 你需要自己定制镜像吗？
 通常是不需要的，DockerHub上能找到各种镜像，课程中老师会给你提供各种镜像，百度上可以找到各种Dockerfile。有了Docker，世界真的变得很轻松。
 
