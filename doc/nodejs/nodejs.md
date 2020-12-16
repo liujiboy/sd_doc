@@ -12,6 +12,12 @@ docker pull node
 docker run -i -t node
 ```
 
+进入交互式环境
+
+![交互式执行nodejs](images/交互式执行nodejs.png)
+
+如果要运行物理机上编写JavaScript代码，就需要用'-v' 指令加载本地目录
+
 另一种方式是在Linux镜像中安装Node.js，[Dockerfile](code/Dockerfile)如下：
 
 ```Dockerfile
