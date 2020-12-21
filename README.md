@@ -81,6 +81,11 @@ JavaScript是Web前端开发的编程语言，现在几乎所有的网页都使�
 1. [JavaScript菜鸟教程](https://www.runoob.com/js/js-tutorial.html)
 2. [B站尚硅谷最新版JavaScript基础全套教程完整版](https://www.bilibili.com/video/BV1YW411T7GX?from=search&seid=14291089148265450182)
 
+关于JavaScript还有几篇有趣的文章，建议大家对JavaScript有基本理解之后再阅读：
+
+1. [JavaScript 模块化的历史进程](https://segmentfault.com/a/1190000023017398)
+2. [JavaScript 、ECMAScript、commonJS 发展历史 与标准化发展](https://blog.csdn.net/lzm18064126848/article/details/53575166)
+3. [横向对比ES5、ES6、ES7、ES8](https://www.jianshu.com/p/909405b7aae4)
 
 ## Node.js
 Node.js是一种运行在服务器端的[JavaScript](https://www.runoob.com/js/js-tutorial.html)。JavaScript是一种运行在浏览器中的语言，但有了Node.js，我们就可以在服务器（或者PC机上）用JavaScript编程。简言之，Node.js将JavaScript变成了另个一Python。同样，我们会使用Docker来安装Node.js，你不用担心Windows装不上Node.js。

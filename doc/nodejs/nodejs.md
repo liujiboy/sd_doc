@@ -69,4 +69,4 @@ node hello.js
 ![在物理机编辑JavaScript](images/在物理机编辑JavaScript.png)
 
 # 总结
-Node.js是NPM工具的基础，要使用NPM必须先安装Node.js。我们并不会直接使用Node.js，而是更多的使用NPM和vue-cli。所以只要你能运行上面的Docker镜像，就算是掌握了。
+Node.js是NPM工具的基础，要使用NPM必须先安装Node.js。我们并不会直接使用Node.js，而是更多的使用NPM和vue-cli。所以只要你能运行上面的Docker镜像，就算是掌握了。如果想用Node.js进行服务器端编程（通常我们会选择Python或者Java，但如果非要用JavaScript.....）可以完整的学习一下[Node.js的官方文档](https://nodejs.org/en/docs/);
