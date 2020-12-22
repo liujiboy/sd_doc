@@ -22,6 +22,7 @@
   - [Flask](#flask)
   - [Ros](#ros)
   - [springboot](#springboot)
+  - [MySql](#mysql)
   
 由于上述每项技术均非常复杂，本文档不可能包含这些技术的全部内容，因此本文档的目标是为每一项技术梳理一个学习的路线图，给出相关的学习资料。你需要按照文档中给出的学习路线图，进一步阅读资料。
 ## git
@@ -86,6 +87,7 @@ JavaScript是Web前端开发的编程语言，现在几乎所有的网页都使�
 1. [JavaScript 模块化的历史进程](https://segmentfault.com/a/1190000023017398)
 2. [JavaScript 、ECMAScript、commonJS 发展历史 与标准化发展](https://blog.csdn.net/lzm18064126848/article/details/53575166)
 3. [横向对比ES5、ES6、ES7、ES8](https://www.jianshu.com/p/909405b7aae4)
+4. [ECMAScript 6 入门](https://es6.ruanyifeng.com/#README)
 
 ## Node.js
 Node.js是一种运行在服务器端的[JavaScript](https://www.runoob.com/js/js-tutorial.html)。JavaScript是一种运行在浏览器中的语言，但有了Node.js，我们就可以在服务器（或者PC机上）用JavaScript编程。简言之，Node.js将JavaScript变成了另个一Python。同样，我们会使用Docker来安装Node.js，你不用担心Windows装不上Node.js。

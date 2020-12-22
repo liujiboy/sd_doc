@@ -61,3 +61,5 @@ npm uninstall express
 ```
 
 npm的详细介绍可以参考[菜鸟NPM使用介绍](https://www.runoob.com/nodejs/nodejs-npm.html)。我们会做vue-cli和vue的学习中使用npm，掌握目前的知识已经足够了。
+
+如果你觉得不过瘾，这里有一篇[如何制作NPM包并发布](../how_to_npm/how_to_npm.md)的文档，你可以进一步学习。

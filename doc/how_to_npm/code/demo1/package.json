@@ -1,0 +1,21 @@
+{
+  "name": "@liujiboy/demo1",
+  "version": "0.1.0",
+  "private": false,
+  "author": "Ji Liu",
+  "main": "dist/main.js",
+  "description": "NPM组件发布示例",
+  "scripts": {
+    "test_com": "node ./com/index.js",
+    "test_es": "node --experimental-modules ./es/index.mjs",
+    "test_babel": "babel-node ./babel/index.js",
+    "test_webpack": "webpack ./com/index.mjs"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
