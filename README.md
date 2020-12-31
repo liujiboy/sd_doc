@@ -74,6 +74,7 @@ HTML就是超文本标记语言，也就是常说的网页。HTML的学习可以
 
 1. [菜鸟CSS教程](https://www.runoob.com/css/css-tutorial.html)
 2. [黑马程序员pink老师前端入门视频教程 HTML5+CSS3+移动端布局](https://www.bilibili.com/video/BV14J4114768?from=search&seid=3887220373124555937)
+3. [CSS参考手册](http://caibaojian.com/css3/)
 
 CSS最重要的是布局，传统的[箱盒布局](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)基于[display](https://developer.mozilla.org/en-US/docs/Web/CSS/display)、[position](https://blog.csdn.net/jianghao233/article/details/80534835)、[float](https://zhuanlan.zhihu.com/p/62658484)等属性，设置起来相对麻烦。最新的浏览器基本都支持[flex布局](https://www.runoob.com/w3cnote/flex-grammar.html)。
 
