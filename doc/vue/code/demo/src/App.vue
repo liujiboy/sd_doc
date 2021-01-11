@@ -4,6 +4,8 @@
       <Button type="primary" to="/simpleForm">简单表单</Button>
       <Button type="primary" to="/dynamicTable">动态表格</Button>
       <Button type="primary" to="/calculator">计算器</Button>
+      <Button type="primary" to="/readFile">读取文件</Button>
+      <Button type="primary" to="/plateRecognition">车牌识别</Button>
     </div>
     <div class="content">
     <router-view></router-view>

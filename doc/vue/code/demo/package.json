@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "tencentcloud-sdk-nodejs": "^4.0.44",
     "view-design": "^4.4.0",
     "vue": "^2.6.11",
     "vue-design": "0.0.5",

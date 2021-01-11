@@ -23,6 +23,14 @@ var config = {
     {
       path: "/calculator",
       component: () => import("@/components/Calculator.vue"),
+    },
+    {
+      path: "/readFile",
+      component: () => import("@/components/ReadFile.vue"),
+    },
+    {
+      path:"/plateRecognition",
+      component:()=>import("@/components/PlateRecognition.vue")
     }
   ],
   mode: "hash"
