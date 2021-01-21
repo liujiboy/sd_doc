@@ -42,6 +42,27 @@ Docker是一款开源应用容器引擎，我们可以认为Docker是运行于�
 
 Windows和Mac的安装都非常傻瓜化，下载安装包，一通Next即可。
 
+**注意！！**
+
+使用Windows10 home edition安装docker会遇到一些麻烦，以下是某位同学的安装流程，供各位参考。
+
+> 首先，进到官网下载Windows版本的Docker Desktop，此时Docker已经有了，环境没配置好。然后，以管理员身份打开PowerShell并运行dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart，这是安装WSL 1。接下来，看系统是否满足运行WSL 2的要求：
+
+> ![889FED1891AB64440F765AF2B693C4AB](./images/889FED1891AB64440F765AF2B693C4AB.png)
+>
+> 然后再次以管理员身份在PowerShell里面运行：
+> dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart，重启电脑，以完成WSL安装并更新到WSL 2（一定要在这里重启）。
+> 接下来下载Linux内核更新包（这是适用于x64计算机的）https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+> 如果是其他机型，应该要下载相应的其他包。安装完成要点击运行完成安装，到这里应该就算完成了。要想知道CPU是否打开了VT，可以打开任务管理器，
+
+> ![01BDA3EAD0F6C5E656E77D71D2B03FAD](images/01BDA3EAD0F6C5E656E77D71D2B03FAD.png)
+>
+> 看这个地方是否是“已启用”，如果不是的话，就需要重启电脑，然后使劲按“F2”，也可能是“DELETE”键——不同电脑不一样，进入BIOS界面。在Advanced Mode里找到跟VT（Virtual Technology）有关的东西，
+
+> ![F6FDBEF74C8E9D9B16DB081F0DD8FC45](images/F6FDBEF74C8E9D9B16DB081F0DD8FC45.jpg)
+>
+> 比如我这里是SVM Mode，把它设置为Enabled模式，就算启动了VT。但我这里遇到了个坑，就是SVM下面的UMA Frame buffer size在我设置SVM的时候自动变成了512M，然后电脑就进入不了系统——黑屏，我把它改成Auto就可以了。进入系统之后，WSL 2就能用了，Docker应该就能成功运行了（不能的话可能需要多打开几次Docker，我就是这样，前几次竟然还不行）。
+
 # 设置国内镜像
 Docker镜像的一个重要来源是[DockerHub](https://registry.hub.docker.com)，这个网站在国内访问起来很慢，因此需要设置国内的加速。设置方法参考如下教程：
 1. [Docker镜像加速](https://www.runoob.com/docker/docker-mirror-acceleration.html)
