@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/iview.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/styles/iview.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="app">
+        <p>{{ message }}</p>
+        <i-form :label-width="80" style="width: 600px">
+            <Form-item label="a的值">
+                <i-input number v-model="a" placeholder="a的值..."></i-input>
+            </Form-item>
+            <Form-item label="b的值">
+                <i-input number v-model="b" placeholder="b的值..."></i-input>
+            </Form-item>
+            <Form-item label="c的值">
+                <i-input number v-model="c" placeholder="c的值..."></i-input>
+            </Form-item>
+            <Form-item label="x开始的值">
+                <i-input number v-model="xStart" placeholder="x开始的值..."></i-input>
+            </Form-item>
+            <Form-item label="x结束的值">
+                <i-input number v-model="xEnd" placeholder="x结束的值..."></i-input>
+            </Form-item>
+            <i-button type="primary" @click="reCompute">重新计算</i-button>
+        </i-form>
+        <div id="main" style="width: 600px;height:400px;"></div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue.js!',
+                xData: [1, 2, 3, 4, 5, 6, 7],
+                yData: [150, 230, 224, 218, 135, 147, 260],
+                a: 2,
+                b: 2,
+                c: 3,
+                xStart: -10,
+                xEnd: 10,
+                myChart:null
+            },
+            methods: {
+                reCompute() {
+                    this.computeModel();
+                    this.showEcharts();
+                },
+                computeModel() {
+                    console.log(this.a, this.b, this.c)
+                    this.xData = [];
+                    this.yData = [];
+                    for (var x = this.xStart; x < this.xEnd; x++) {
+                        this.xData.push(x);
+                        this.yData.push(this.a * x * x + this.b * x + this.c);
+                    }
+                },
+                showEcharts() {
+                    var option = {
+                        xAxis: {
+                            type: 'category',
+                            data: this.xData
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: this.yData,
+                            type: 'line'
+                        }]
+                    };
+                    option && this.myChart.setOption(option);
+                }
+            },
+            mounted() {
+                //this.computeModel();
+                //this.showEcharts();
+                var chartDom = document.getElementById('main');
+                this.myChart = echarts.init(chartDom);
+            }
+        })
+
+    </script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+
+</html>
