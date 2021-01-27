@@ -12,5 +12,5 @@ RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ numpy scipy matplotl
 #安装TensorFlow
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ tensorflow
 #安装Pytorch
-RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ torch 
+RUN pip3 install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ torch 
 RUN pip3 install -i https://mirrors.aliyun.com/pypi/simple/ torchvision
