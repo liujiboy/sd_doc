@@ -375,9 +375,7 @@ rosrun ros_tutorials_topic topic_subscriber
 
 ![image-20210127170908509](images/image-20210127170908509.png)
 
-# Docker镜像
-
-## 发布者和订阅者镜像
+# 发布者和订阅者镜像
 
 ```shell
 docker run -it --rm -p 6080:80 -p 5900:5900 --name ros liujiboy/ros_tutorials_topic
@@ -399,10 +397,70 @@ cd /home/ubuntu/Project/catkin_ws
 rosrun ros_tutorials_topic topic_subscriber
 ```
 
-## 用Python3实现发布者和订阅者镜像
+# 用Python3实现发布者和订阅者
+
+用Python编写ROS程序比用C++更为简单。下面给出docker镜像`liujiboy/ros_python3`的构建过程：
+
+```dockerfile
+FROM liujiboy/ros
+# 项目目录
+ARG PROJECT_DIR=/home/ubuntu/Project/catkin_ws
+# 源代码目录
+ARG SOURCE_DIR=${PROJECT_DIR}/src
+# 创建源代码目录
+RUN mkdir -p ${SOURCE_DIR}
+# 进入源代码目录
+WORKDIR ${SOURCE_DIR}
+# 初始化
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \
+    catkin_init_workspace'
+# 进入项目目录
+WORKDIR ${PROJECT_DIR}
+# 构建
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \ 
+    catkin_make'
+# 激活虚拟环境使用python3
+RUN virtualenv -p /usr/bin/python3 venv
+# 在虚拟环境下安装ros python包
+RUN /bin/bash -c 'source venv/bin/activate; \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple/ catkin_pkg pyyaml empy rospkg'
+# 进入源代码目录
+WORKDIR ${SOURCE_DIR}
+# 创建功能包ros_python3 依赖message_generation std_msgs roscpp
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \
+    catkin_create_pkg ros_python3 message_generation std_msgs roscpp'
+# 在源代码目录下创建一个scripts目录放置python文件
+RUN mkdir -p ${SOURCE_DIR}/ros_python3/scripts
+# 拷贝python脚本到项目
+COPY scripts ${SOURCE_DIR}/ros_python3/scripts
+# 给python脚本赋予执行权限
+WORKDIR ${SOURCE_DIR}/ros_python3/scripts
+RUN chmod +x listener.py
+RUN chmod +x talker.py
+RUN chmod +x talker2.py
+# 拷贝启动脚本并赋予执行权限
+COPY start_talker.sh /root
+RUN chmod +x /root/start_talker.sh
+
+COPY start_talker2.sh /root
+RUN chmod +x /root/start_talker2.sh
+
+COPY start_listener.sh /root
+RUN chmod +x /root/start_listener.sh
+```
+
+**编写ROS程序并不需要在VSCode中用鼠标点来点去，更高效的方法是编写脚本，脚本定义了ROS程序编写的流程。这个流程是可复用的，后续可以在此基础上扩展（见[用Python3实现简单“机器人”控制](#用Python3实现简单"机器人"控制)）。**
+
+执行下列代码，启动镜像：
 
 ```shell
 docker run -it --rm -p 6080:80 -p 5900:5900 --name ros liujiboy/ros_python3
+```
+
+打开一个`Terminator`，先运行
+
+```shell
+roscore
 ```
 
 运行发布者
@@ -423,12 +481,80 @@ docker run -it --rm -p 6080:80 -p 5900:5900 --name ros liujiboy/ros_python3
 /root/start_listener.sh
 ```
 
-程序实现代码参考：https://github.com/liujiboy/dockerimages/tree/master/ros/ros_python3
+镜像中使用的python代码见：https://github.com/liujiboy/dockerimages/tree/master/ros/ros_python3
 
-## 用Python3实现简单“机器人”控制
+# 用Python3实现简单“机器人”控制
+
+docker镜像`liujiboy/ros_robot`的构建过程如下：
+
+```dockerfile
+FROM liujiboy/ros
+# 项目目录
+ARG PROJECT_DIR=/home/ubuntu/Project/catkin_ws
+# 源代码目录
+ARG SOURCE_DIR=${PROJECT_DIR}/src
+
+# 创建源代码目录
+RUN mkdir -p ${SOURCE_DIR}
+# 进入源代码目录
+WORKDIR ${SOURCE_DIR}
+# 初始化
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \
+    catkin_init_workspace'
+# 进入项目目录
+WORKDIR ${PROJECT_DIR}
+# 构建
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \ 
+    catkin_make'
+# 激活虚拟环境使用python3
+RUN virtualenv -p /usr/bin/python3 venv
+# 在虚拟环境下安装ros python包
+RUN /bin/bash -c 'source venv/bin/activate; \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple/ catkin_pkg pyyaml empy rospkg pygame'
+# 进入源代码目录
+WORKDIR ${SOURCE_DIR}
+# 创建功能包ros_python3 依赖message_generation std_msgs roscpp
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \
+    catkin_create_pkg ros_robot message_generation std_msgs roscpp'
+# 在源代码目录下创建一个scripts目录放置python文件
+RUN mkdir -p ${SOURCE_DIR}/ros_robot/scripts
+# 拷贝python脚本到项目
+COPY scripts ${SOURCE_DIR}/ros_robot/scripts
+# 拷贝消息定义
+COPY msg ${SOURCE_DIR}/ros_robot/msg
+# 拷贝修改后的CMake文件
+COPY CMakeLists.txt ${SOURCE_DIR}/ros_robot
+# 构建消息
+WORKDIR ${PROJECT_DIR}
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \
+    source venv/bin/activate;\
+    catkin_make'
+
+# 给python脚本赋予执行权限
+WORKDIR ${SOURCE_DIR}/ros_robot/scripts
+RUN chmod +x game.py
+RUN chmod +x publish_speed.py
+
+# 拷贝启动脚本并赋予执行权限
+COPY start_game.sh /root
+RUN chmod +x /root/start_game.sh
+
+COPY start_publish_speed.sh /root
+RUN chmod +x /root/start_publish_speed.sh
+```
+
+**可以看到，上述代码与[用Python3实现发布者和订阅者](#用Python3实现发布者和订阅者)非常类似，事实上这个代码就是在[用Python3实现发布者和订阅者](#用Python3实现发布者和订阅者)基础上修改的。编程是真正意义上的写代码，而不是动鼠标点来点去。**
+
+执行下列代码，启动镜像：
 
 ```shell
 docker run -it --rm -p 6080:80 -p 5900:5900 --name ros liujiboy/ros_robot
+```
+
+打开`Terminator`，先运行
+
+```shell
+roscore
 ```
 
 运行"机器人"
@@ -444,3 +570,214 @@ docker run -it --rm -p 6080:80 -p 5900:5900 --name ros liujiboy/ros_robot
 ```
 
 程序实现代码参考：https://github.com/liujiboy/dockerimages/tree/master/ros/ros_robot
+
+# 如何部署ROS程序
+
+我们在`liujiboy/ros_python3`程序的基础上修改，构造一个可以部署的`发布者和订阅者镜像`。
+
+修改后的Docker镜像为`liujiboy/ros_python3_deploy`
+
+```dockerfile
+FROM liujiboy/ros
+# 项目目录
+ARG PROJECT_DIR=/home/ubuntu/Project/catkin_ws
+# 源代码目录
+ARG SOURCE_DIR=${PROJECT_DIR}/src
+# 创建源代码目录
+RUN mkdir -p ${SOURCE_DIR}
+# 进入源代码目录
+WORKDIR ${SOURCE_DIR}
+# 初始化
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \
+    catkin_init_workspace'
+# 进入项目目录
+WORKDIR ${PROJECT_DIR}
+# 构建
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \ 
+    catkin_make'
+# 激活虚拟环境使用python3
+RUN virtualenv -p /usr/bin/python3 venv
+# 在虚拟环境下安装ros python包
+RUN /bin/bash -c 'source venv/bin/activate; \
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple/ catkin_pkg pyyaml empy rospkg'
+# 进入源代码目录
+WORKDIR ${SOURCE_DIR}
+# 创建功能包ros_python3 依赖message_generation std_msgs roscpp
+RUN /bin/bash -c 'source /opt/ros/kinetic/setup.bash; \
+    catkin_create_pkg ros_python3 message_generation std_msgs roscpp'
+# 在源代码目录下创建一个scripts目录放置python文件
+RUN mkdir -p ${SOURCE_DIR}/ros_python3/scripts
+# 拷贝python脚本到项目
+COPY scripts ${SOURCE_DIR}/ros_python3/scripts
+# 给python脚本赋予执行权限
+WORKDIR ${SOURCE_DIR}/ros_python3/scripts
+RUN chmod +x listener.py
+RUN chmod +x talker.py
+RUN chmod +x talker2.py
+# 拷贝启动脚本并赋予执行权限
+COPY start_talker.sh /root
+RUN chmod +x /root/start_talker.sh
+
+COPY start_talker2.sh /root
+RUN chmod +x /root/start_talker2.sh
+
+COPY start_listener.sh /root
+RUN chmod +x /root/start_listener.sh
+
+# 设置ROS_MASTER_URI和ROS_HOSTNAME
+ENV ROS_MASTER_URI http://rosmaster:11311
+ENV ROS_HOSTNAME=rosmaster
+```
+
+其他代码与`liujiboy/ros_python3`相同，唯一区别是增加了`ROS_MASTER_URI`和`ROS_HOSTNAME`两个环境变量
+
+```dockerfile
+ENV ROS_MASTER_URI http://rosmaster:11311
+ENV ROS_HOSTNAME=rosmaster
+```
+
+`ROS_MASTER_URI`和`ROS_HOSTNAME`指定了ROS主节点（Master节点）的地址，此处设置为`rosmaster`（可根据具体情况修改为ip地址或者域名）。
+
+## 在单台主机上部署两个ROS程序
+
+首先需要用docker利用如下指令创建一个名称为`ros`的network：
+
+```shell
+docker network create ros
+```
+
+创建成功后，执行`docker network list`可以看到创建好的`ros`网络名称
+
+<img src="images/image-20210128100256992.png" alt="image-20210128100256992" style="zoom:80%;" />
+
+下面用两个指令启动两个不同的ros容器：
+
+```shell
+docker run -d --rm --network ros --network-alias rosmaster --name rosmaster liujiboy/ros_python3_deploy
+docker run -d --rm --network ros --network-alias rosslave1 --name rosslave1 liujiboy/ros_python3_deploy
+```
+
+1. `-d`表示后台运行
+2. `--rm`表示停止运行后自动删除容器
+3. `--network ros`表示运行的容器加入到`ros`网络
+4. `--network-alias rosmaster`表示该容器的网络名称是`rosmaster`(`ROS_MASTER_URI`和`ROS_HOSTNAME`指定的ROS主节点)
+5. `--network-alias rosslave1`表示该容器的网络名称是`rosslave1`
+6. `--name rosmaster`表示容器名称是`rosmaster`
+7. `--name rosslave1`表示容器名称是`rosslave1`
+
+**注意：**因为发布者订阅者程序不需要GUI界面，所以启动时没有映射http和vnc访问的端口，如果需要可以自行映射（参考前面的文档）。
+
+下面在`rosmaster`上运行`roscore`和`talker.py`，指令如下：
+
+```shell
+docker exec -it rosmaster /bin/bash #进入rosmaster的命令行
+roscore& #启动ros
+/root/start_talker.sh #启动talker.py
+```
+
+在`rossalve1`上运行`listener.py`，指令如下：
+
+```shell
+docker exec -it rossalve1 /bin/bash #进入rossalve1的命令行
+/root/start_listener.sh #启动listener.py
+```
+
+结果如下：
+
+![image-20210128101940626](images/image-20210128101940626.png)
+
+执行`docker ps`可以查看当前运行的容器：
+
+<img src="images/image-20210128102030487.png" alt="image-20210128102030487" style="zoom:67%;" />
+
+最后终止容器的执行可以运行如下指令：
+
+```shell
+docker stop rosslave1
+docker stop rosmaster
+```
+
+## 在两台物理机上部署ROS程序
+
+首先确保两台物理机在同一个网段，然后正确设置`ROS_MASTER_URI`和`ROS_HOSTNAME`指向ROS主节点的地址（运行主节点的），两台主机分别启动ROS镜像，并映射相应端口（例如11311）。例如两台主机域名和ip地址分别如下：
+
+```properties
+rosmaster 192.168.0.1 #作为ROS主节点
+rosslave1 192.168.0.2
+```
+
+设置`ROS_MASTER_URI`和`ROS_HOSTNAME`两个环境变量为
+
+```dockerfile
+ENV ROS_MASTER_URI http://rosmaster:11311
+ENV ROS_HOSTNAME=rosmaster
+```
+
+或者
+
+```dockerfile
+ENV ROS_MASTER_URI http://192.168.0.1:11311
+ENV ROS_HOSTNAME=192.168.0.1
+```
+
+**注意：**采用域名方式比IP地址更加灵活，推荐采用域名方式。
+
+以主机模式在两台物理机上分别启动ROS容器
+
+```shell
+docker run -d --rm --net=host --name rosmaster liujiboy/ros_python3_deploy # 192.168.0.1上运行
+docker run -d --rm --net=host --name rosslave1 liujiboy/ros_python3_deploy # 192.168.0.2上运行
+```
+
+`--net=host`采用主机模式启动容器，自动映射虚拟机的网络端口。
+
+**注意：**采用`--net=host`模式，主机和虚拟机开放的端口可能出现冲突，应根据情况关闭主机或者虚拟机的网络端口。
+
+**`--net=host`模式自动端口映射仅在Linux系统下有效**，考虑到大多数机器人系统均采用Linux，所以这并不是很大的问题。
+
+# 采用官方ROS镜像
+
+官方提供ROS2版本的[镜像](https://hub.docker.com/_/ros)，ROS2比ROS1的编程更简单，但ROS1使用更广泛。随着ROS2的逐渐发展，未来几年ROS2肯定会逐步提到ROS1。
+
+下面我们依据官方的[publisher and subscriber文档](https://index.ros.org/doc/ros2/Tutorials/Writing-A-Simple-Py-Publisher-And-Subscriber/)构建docker镜像`liujiboy/ros2_pubsub`。Dockerfile如下：
+
+```dockerfile
+FROM ros:foxy
+# 进入/root目录
+WORKDIR /root
+# 创建项目目录
+RUN mkdir -p /root/ros_ws
+# 进入项目目录
+WORKDIR /root/ros_ws
+# 创建py_pubsub
+RUN /bin/bash -c 'source /opt/ros/$ROS_DISTRO/setup.bash;\
+    ros2 pkg create --build-type ament_python py_pubsub'
+# 拷贝python文件到目录
+COPY  scripts /root/ros_ws/py_pubsub/py_pubsub
+# 拷贝package.xml、setup.cfg和setup.py
+COPY  config /root/ros_ws/py_pubsub
+# 进入项目目录
+WORKDIR /root/ros_ws
+# 构建
+RUN colcon build --packages-select py_pubsub
+
+# 拷贝启动脚本，赋予启动权限
+COPY start_talker.sh /root
+RUN chmod +x /root/start_talker.sh
+
+COPY start_listener.sh /root
+RUN chmod +x /root/start_listener.sh
+```
+
+Dockerfile中使用到的代码参考：https://github.com/liujiboy/dockerimages/tree/master/ros2/ros2_pubsub
+
+如果已经用docker创建了`ros`网络，则分别执行如下代码：
+
+```shell
+docker run -it --rm --network ros --network-alias pub --name pub liujiboy/ros2_pubsub /root/start_talker.sh
+docker run -it --rm --network ros --network-alias sub --name sub liujiboy/ros2_pubsub /root/start_listener.sh
+```
+
+运行结果如下：
+
+![image-20210128113710180](images/image-20210128113710180.png)
